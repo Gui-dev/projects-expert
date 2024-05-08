@@ -41,7 +41,7 @@ export default function Home() {
   }, [])
 
   return (
-    <div className="m-auto my-12 max-w-6xl space-y-6">
+    <div className="m-auto my-12 max-w-6xl space-y-6 px-5">
       <img src="/logo.svg" alt="Speech Note Logo" />
       <form className="w-full">
         <input
@@ -53,7 +53,7 @@ export default function Home() {
         />
       </form>
       <div className="h-px bg-slate-700" />
-      <div className="grid auto-rows-[250px] grid-cols-3 gap-6">
+      <div className="grid auto-rows-[250px] grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <NewNoteCard onNoteCreated={onNoteCreated} />
         {filtered_notes.map((note) => {
           return <NoteCard key={String(note.id)} note={note} />

@@ -29,7 +29,7 @@ export const NoteCard = ({ note }: INoteCard) => {
         <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-black/60 to-black/0" />
       </DialogTrigger>
       <DialogPortal>
-        <DialogContent className="flex h-[60vh] w-full max-w-[640px] flex-col rounded-md border border-slate-500 bg-slate-700">
+        <DialogContent className="fixed flex h-full w-full flex-col border border-slate-500 bg-slate-700 md:h-[60vh] md:max-w-[640px] md:rounded-md">
           <div className="flex flex-1 flex-col gap-3">
             <span className="text-sm font-medium text-slate-300">
               {formatDistanceToNow(note.date, {
