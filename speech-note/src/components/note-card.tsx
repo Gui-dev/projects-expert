@@ -16,9 +16,10 @@ export interface INoteProps {
 
 interface INoteCard {
   note: INoteProps
+  onNoteDeleted: (id: string) => void
 }
 
-export const NoteCard = ({ note }: INoteCard) => {
+export const NoteCard = ({ note, onNoteDeleted }: INoteCard) => {
   return (
     <Dialog>
       <DialogTrigger className="relative flex flex-col gap-3 overflow-hidden rounded-md bg-slate-800 p-5 text-left hover:ring-2 hover:ring-slate-600 focus-visible:ring-2 focus-visible:ring-lime-400">
@@ -44,6 +45,7 @@ export const NoteCard = ({ note }: INoteCard) => {
             <button
               type="button"
               className="group w-full rounded-md bg-slate-800 py-4 text-center text-sm font-medium text-slate-300 outline-none"
+              onClick={() => onNoteDeleted(note.id)}
             >
               Deseja{' '}
               <span className="text-red-400 group-hover:underline">

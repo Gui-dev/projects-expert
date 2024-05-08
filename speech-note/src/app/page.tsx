@@ -33,6 +33,12 @@ export default function Home() {
     localStorage.setItem('notes', JSON.stringify([new_note, ...notes]))
   }
 
+  const onNoteDeleted = (id: string) => {
+    const filtered_notes = notes.filter(note => note.id !== id)
+    setNotes(filtered_notes)
+    localStorage.setItem('notes', JSON.stringify(filtered_notes))
+  }
+
   useEffect(() => {
     const notes_on_storage = localStorage.getItem('notes')
     if (notes_on_storage) {
@@ -56,7 +62,7 @@ export default function Home() {
       <div className="grid auto-rows-[250px] grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <NewNoteCard onNoteCreated={onNoteCreated} />
         {filtered_notes.map((note) => {
-          return <NoteCard key={String(note.id)} note={note} />
+          return <NoteCard key={String(note.id)} note={note} onNoteDeleted={onNoteDeleted} />
         })}
       </div>
     </div>
