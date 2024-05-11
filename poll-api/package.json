@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "tsx watch --env-file=.env --ignore node_modules src/http/server.ts"
   },
   "keywords": [],
   "author": "",
@@ -22,5 +22,8 @@
     "eslint-plugin-promise": "^6.1.1",
     "tsx": "^4.9.3",
     "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "fastify": "^4.27.0"
   }
 }
