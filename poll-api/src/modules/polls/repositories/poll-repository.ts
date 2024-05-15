@@ -22,4 +22,22 @@ export class PollRepository implements IPollRepositoryContract {
 
     return poll
   }
+
+  public async findPollById(id: string): Promise<Poll | null> {
+    const poll = await prisma.poll.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        poll_options: {
+          select: {
+            id: true,
+            title: true,
+          },
+        },
+      },
+    })
+
+    return poll
+  }
 }
