@@ -1,11 +1,13 @@
 import Fastify from 'fastify'
 
-import { pollsRoute } from '../modules/polls/routes/polls.route'
+import { createPollsRoute } from '../modules/polls/routes/create-polls.route'
+import { getPollsRoute } from '../modules/polls/routes/get-polls.route'
 
 const app = Fastify()
 const PORT = 3333 || process.env.PORT
 
-app.register(pollsRoute)
+app.register(createPollsRoute)
+app.register(getPollsRoute)
 
 app
   .listen({
