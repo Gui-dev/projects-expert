@@ -1,12 +1,22 @@
 import { type Poll } from '@prisma/client'
 import { type IPollRepositoryContract } from '../contracts/poll-repository-contract'
 import { prisma } from '../../../shared/services/prisma'
+import { type ICreatePollDTO } from '../dtos/create-poll-dto'
 
 export class PollRepository implements IPollRepositoryContract {
-  public async create(title: string): Promise<Poll> {
+  public async create({ title, options }: ICreatePollDTO): Promise<Poll> {
     const poll = await prisma.poll.create({
       data: {
         title,
+        poll_options: {
+          createMany: {
+            data: options.map((option) => {
+              return {
+                title: option,
+              }
+            }),
+          },
+        },
       },
     })
 

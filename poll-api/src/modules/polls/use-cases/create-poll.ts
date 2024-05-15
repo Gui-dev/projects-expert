@@ -1,10 +1,7 @@
 import { type IPollRepositoryContract } from '../contracts/poll-repository-contract'
+import { type ICreatePollDTO } from '../dtos/create-poll-dto'
 import { PollRepository } from '../repositories/poll-repository'
 import { type CreatePollResponse } from '../validations/create-poll-validation'
-
-interface ICreatePoll {
-  title: string
-}
 
 export class CreatePoll {
   public readonly pollRepository: IPollRepositoryContract
@@ -13,8 +10,11 @@ export class CreatePoll {
     this.pollRepository = new PollRepository()
   }
 
-  public async execute({ title }: ICreatePoll): Promise<CreatePollResponse> {
-    const poll = await this.pollRepository.create(title)
+  public async execute({
+    title,
+    options,
+  }: ICreatePollDTO): Promise<CreatePollResponse> {
+    const poll = await this.pollRepository.create({ title, options })
 
     if (!poll) {
       throw new Error('Error to create poll')

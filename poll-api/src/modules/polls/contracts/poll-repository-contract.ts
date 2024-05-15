@@ -1,5 +1,6 @@
 import { type Poll } from '@prisma/client'
+import { type ICreatePollDTO } from '../dtos/create-poll-dto'
 
 export interface IPollRepositoryContract {
-  create: (title: string) => Promise<Poll>
+  create: (data: ICreatePollDTO) => Promise<Poll>
 }

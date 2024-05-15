@@ -2,6 +2,7 @@ import { z } from 'zod'
 
 export const createPollValidation = z.object({
   title: z.string(),
+  options: z.array(z.string()),
 })
 
 export const createPollResponseValidation = z.object({
