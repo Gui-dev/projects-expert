@@ -13,7 +13,7 @@ model Poll {
   created_at   DateTime     @default(now())
   updated_at   DateTime     @default(now())
   poll_options PollOption[]
-  Vote         Vote[]
+  vote         Vote[]
 
   @@map("polls")
 }
