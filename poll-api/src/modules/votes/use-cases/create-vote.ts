@@ -2,6 +2,7 @@ import { type Vote } from '@prisma/client'
 import { type ICreateVoteDTO } from '../dtos/create-vote-dto'
 import { type IVoteRepositoryContract } from '../contracts/vote-repository-contract'
 import { VoteRepository } from '../repositories/vote-repository'
+import { redis } from '../../../shared/services/redis'
 
 export class CreateVote {
   public readonly vote_repository: IVoteRepositoryContract
@@ -26,6 +27,7 @@ export class CreateVote {
       userPreviousVoteOnPoll.poll_option_id !== poll_option_id
     ) {
       await this.vote_repository.delete(userPreviousVoteOnPoll.id)
+      await redis.zincrby(poll_id, -1, userPreviousVoteOnPoll.poll_option_id)
     } else if (userPreviousVoteOnPoll) {
       throw new Error('You already voted on this poll')
     }
@@ -39,6 +41,8 @@ export class CreateVote {
     if (!vote) {
       throw new Error('Error to vote')
     }
+
+    await redis.zincrby(poll_id, 1, poll_option_id)
 
     return vote
   }

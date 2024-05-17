@@ -3,7 +3,7 @@ import cookie from '@fastify/cookie'
 
 import { createPollsRoute } from '../modules/polls/routes/create-polls.route'
 import { getPollsRoute } from '../modules/polls/routes/get-polls.route'
-import { voteOnPollsRoute } from '../modules/polls/routes/vote-on-polls.route'
+import { voteOnPollsRoute } from '../modules/votes/routes/vote-on-polls.route'
 
 const app = Fastify()
 const PORT = 3333 || process.env.PORT

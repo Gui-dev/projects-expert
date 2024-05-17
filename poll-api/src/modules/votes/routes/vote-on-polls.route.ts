@@ -4,7 +4,7 @@ import { randomUUID } from 'node:crypto'
 import {
   voteOnPollParamsValidation,
   voteOnPollValidation,
-} from './../../votes/validations/vote-on-poll-validation'
+} from './../validations/vote-on-poll-validation'
 import { CreateVote } from '../../votes/use-cases/create-vote'
 
 export const voteOnPollsRoute = async (app: FastifyInstance): Promise<void> => {
@@ -16,12 +16,10 @@ export const voteOnPollsRoute = async (app: FastifyInstance): Promise<void> => {
       const createVote = new CreateVote()
       let { session_id } = request.cookies
 
-      console.log('SessionID: ', session_id)
-
       if (!session_id) {
         session_id = randomUUID()
 
-        reply.setCookie('session_id', session_id, {
+        await reply.setCookie('session_id', session_id, {
           path: '/',
           maxAge: 60 * 60 * 24 * 30, // 30 days
           signed: true,
