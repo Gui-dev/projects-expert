@@ -3,6 +3,8 @@ import { type ICreateVoteDTO } from '../dtos/create-vote-dto'
 import { type IVoteRepositoryContract } from '../contracts/vote-repository-contract'
 import { VoteRepository } from '../repositories/vote-repository'
 import { redis } from '../../../shared/services/redis'
+import { voting } from '../../websocket/services/voting-pub-sub'
+// import { type IVotingPubSubContract } from '../../websocket/contracts/voting-pub-sub-contract'
 
 export class CreateVote {
   public readonly vote_repository: IVoteRepositoryContract
@@ -43,6 +45,10 @@ export class CreateVote {
     }
 
     await redis.zincrby(poll_id, 1, poll_option_id)
+    voting.publisher(poll_id, {
+      poll_option_id,
+      votes: 1,
+    })
 
     return vote
   }
