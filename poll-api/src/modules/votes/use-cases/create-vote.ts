@@ -29,7 +29,15 @@ export class CreateVote {
       userPreviousVoteOnPoll.poll_option_id !== poll_option_id
     ) {
       await this.vote_repository.delete(userPreviousVoteOnPoll.id)
-      await redis.zincrby(poll_id, -1, userPreviousVoteOnPoll.poll_option_id)
+      const votes = await redis.zincrby(
+        poll_id,
+        -1,
+        userPreviousVoteOnPoll.poll_option_id,
+      )
+      voting.publisher(poll_id, {
+        poll_option_id: userPreviousVoteOnPoll.poll_option_id,
+        votes: Number(votes),
+      })
     } else if (userPreviousVoteOnPoll) {
       throw new Error('You already voted on this poll')
     }
@@ -44,10 +52,10 @@ export class CreateVote {
       throw new Error('Error to vote')
     }
 
-    await redis.zincrby(poll_id, 1, poll_option_id)
+    const votes = await redis.zincrby(poll_id, 1, poll_option_id)
     voting.publisher(poll_id, {
       poll_option_id,
-      votes: 1,
+      votes: Number(votes),
     })
 
     return vote
