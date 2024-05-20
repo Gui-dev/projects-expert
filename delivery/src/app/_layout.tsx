@@ -29,7 +29,7 @@ const Layout = () => {
   }
 
   return (
-    <SafeAreaView className="flex-1 bg-slate-900">
+    <SafeAreaView className="flex-1 bg-slate-900 py-8">
       <StatusBar style="light" translucent />
       <Slot />
     </SafeAreaView>
