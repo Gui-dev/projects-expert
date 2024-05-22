@@ -6,8 +6,10 @@ import { Category } from '@/components/category'
 import { Header } from '@/components/header'
 import { Product } from '@/components/product'
 import { Link } from 'expo-router'
+import { useCartStore } from '@/stores/cart-store'
 
 const Home = () => {
+  const { products } = useCartStore()
   const [categorySelected, setCategorySelected] = useState(CATEGORIES[0])
   const section_list_ref = useRef<SectionList>(null)
 
@@ -27,7 +29,7 @@ const Home = () => {
 
   return (
     <View className="flex-1">
-      <Header title="Faça se pedido" cart_quantity={5} />
+      <Header title="Faça se pedido" cart_quantity={products.length} />
       <FlatList
         data={CATEGORIES}
         keyExtractor={(item) => item}
