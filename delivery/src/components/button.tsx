@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   TouchableOpacityProps,
 } from 'react-native'
+import { twMerge } from 'tailwind-merge'
 
 interface IButton extends TouchableOpacityProps {
   children: ReactNode
@@ -22,7 +23,9 @@ const Button = ({ children, ...rest }: IButton) => {
   return (
     <TouchableOpacity
       {...rest}
-      className="h-12 flex-row items-center justify-center rounded-md bg-lime-400"
+      className={twMerge(
+        'h-12 flex-row items-center justify-center rounded-md bg-lime-400',
+      )}
       activeOpacity={0.7}
     >
       {children}
@@ -32,7 +35,10 @@ const Button = ({ children, ...rest }: IButton) => {
 
 const ButtonText = ({ children, ...rest }: IButtonText) => {
   return (
-    <Text {...rest} className="mx-2 font-heading text-base text-black">
+    <Text
+      {...rest}
+      className={twMerge('mx-2 font-heading text-base text-black')}
+    >
       {children}
     </Text>
   )
