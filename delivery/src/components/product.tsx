@@ -17,6 +17,7 @@ interface IProduct extends TouchableOpacityProps {
     cover: any
     thumbnail: ImageProps
     ingredients: string[]
+    quantity?: number
   }
 }
 
@@ -35,9 +36,16 @@ export const Product = forwardRef<TouchableOpacity, IProduct>(
           className="h-20 w-20 rounded-md"
         />
         <View className="ml-3 flex-1">
-          <Text className="flex-1 font-subtitle text-base text-slate-100">
-            {product.title}
-          </Text>
+          <View className="flex-row items-center justify-between">
+            <Text className="font-subtitle text-base text-slate-100">
+              {product.title}
+            </Text>
+            {product.quantity && (
+              <Text className="font-subtitle text-sm text-slate-400">
+                x {product.quantity}
+              </Text>
+            )}
+          </View>
           <Text className="mt-0.5 text-xs leading-5 text-slate-400">
             {product.description}
           </Text>

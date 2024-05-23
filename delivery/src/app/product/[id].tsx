@@ -1,5 +1,5 @@
-import { Image, Text, View } from 'react-native'
-import { useLocalSearchParams, useNavigation } from 'expo-router'
+import { Alert, Image, Text, View } from 'react-native'
+import { Redirect, useLocalSearchParams, useNavigation } from 'expo-router'
 import { Feather } from '@expo/vector-icons'
 import colors from 'tailwindcss/colors'
 
@@ -8,12 +8,19 @@ import { PRODUCTS } from '@/utils/data/products'
 import { formatCurrency } from '@/utils/functions/format-currency'
 import { LinkButton } from '@/components/link-button'
 import { useCartStore } from '@/stores/cart-store'
+import React from 'react'
 
 const Product = () => {
   const { add } = useCartStore()
   const { id } = useLocalSearchParams()
   const navigation = useNavigation()
-  const product = PRODUCTS.filter((item) => item.id === id)[0]
+  const product = PRODUCTS.find((item) => item.id === id)
+
+  if (!product) {
+    Alert.alert('Opsssss', 'Esse produto não existe')
+    return <Redirect href="/" />
+  }
+
   const price_formatted = formatCurrency(product.price)
 
   const handleAddToCart = () => {
@@ -30,7 +37,10 @@ const Product = () => {
         resizeMode="cover"
       />
       <View className="mt-8 flex-1 p-5">
-        <Text className="font-heading text-2xl text-lime-400">
+        <Text className="font-heading text-xl text-slate-100">
+          {product.title}
+        </Text>
+        <Text className="my-2 font-heading text-2xl text-lime-400">
           {price_formatted}
         </Text>
         <Text className="mb-6 font-body text-base leading-6 text-slate-400">

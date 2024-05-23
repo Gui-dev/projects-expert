@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react'
 import { FlatList, SectionList, Text, View } from 'react-native'
 
-import { CATEGORIES, MENU } from '@/utils/data/products'
+import { CATEGORIES, MENU, ProductProps } from '@/utils/data/products'
 import { Category } from '@/components/category'
 import { Header } from '@/components/header'
 import { Product } from '@/components/product'
@@ -11,7 +11,7 @@ import { useCartStore } from '@/stores/cart-store'
 const Home = () => {
   const { products } = useCartStore()
   const [categorySelected, setCategorySelected] = useState(CATEGORIES[0])
-  const section_list_ref = useRef<SectionList>(null)
+  const section_list_ref = useRef<SectionList<ProductProps>>(null)
 
   const handleCategorySelect = (category_selected: string) => {
     setCategorySelected(category_selected)
