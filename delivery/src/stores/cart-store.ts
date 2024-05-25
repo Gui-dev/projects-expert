@@ -10,6 +10,7 @@ export interface IProductCartProps extends ProductProps {
 interface ICartProps {
   products: IProductCartProps[]
   add: (product: ProductProps) => void
+  remove: (product_id: string) => void
 }
 
 export const useCartStore = create<ICartProps>((set) => {
@@ -18,6 +19,10 @@ export const useCartStore = create<ICartProps>((set) => {
     add: (product: ProductProps) =>
       set((state) => ({
         products: cartInMemory.add(state.products, product),
+      })),
+    remove: (product_id: string) =>
+      set((state) => ({
+        products: cartInMemory.remove(state.products, product_id),
       })),
   }
 })

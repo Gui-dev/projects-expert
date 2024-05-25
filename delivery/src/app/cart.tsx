@@ -1,4 +1,4 @@
-import { ScrollView, Text, View } from 'react-native'
+import { Alert, ScrollView, Text, View } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { Feather } from '@expo/vector-icons'
 
@@ -11,9 +11,10 @@ import { Input } from '@/components/input'
 import { Button } from '@/components/button'
 import { LinkButton } from '@/components/link-button'
 import colors from 'tailwindcss/colors'
+import { ProductProps } from '@/utils/data/products'
 
 const Cart = () => {
-  const { products } = useCartStore()
+  const { products, remove } = useCartStore()
 
   const total = formatCurrency(
     products.reduce((total, product) => {
@@ -22,6 +23,18 @@ const Cart = () => {
     }, 0),
   )
 
+  const handleProductRemove = (product: ProductProps) => {
+    Alert.alert('Remover', `Deseja remover ${product.title} do carrinho`, [
+      {
+        text: 'Cancelar',
+      },
+      {
+        text: 'Remover',
+        onPress: () => remove(product.id),
+      },
+    ])
+  }
+
   if (products.length === 0) {
     return <CartEmpty />
   }
@@ -29,15 +42,24 @@ const Cart = () => {
   return (
     <View className="flex-1">
       <Header title="Seu carrinho" />
-      <KeyboardAwareScrollView>
+      <KeyboardAwareScrollView
+        showsVerticalScrollIndicator={false}
+        extraHeight={100}
+      >
         <ScrollView>
           <View className="flex-1 p-5">
             {products.map((product) => {
-              return <Product key={product.id} product={product} />
+              return (
+                <Product
+                  key={product.id}
+                  product={product}
+                  onPress={() => handleProductRemove(product)}
+                />
+              )
             })}
           </View>
 
-          <View className="w-full bg-slate-950 pb-6">
+          <View className="w-full flex-1 bg-slate-950 pb-6">
             <View className="mb-6 mt-2 flex-row items-center gap-2 px-5">
               <Text className="font-subtitle text-xl text-slate-100">
                 Total:
@@ -46,24 +68,24 @@ const Cart = () => {
                 {total}
               </Text>
             </View>
-            <View className="gap-5 px-5">
-              <Input placeholder="Informe o endereço de entrega com: rua, bairro, CEP e número" />
-              <Button>
-                <Button.Icon>
-                  <Feather name="arrow-right-circle" size={20} />
-                </Button.Icon>
-                <Button.Text>Enviar pedido</Button.Text>
-              </Button>
+          </View>
+          <View className="gap-5 px-5 pb-10">
+            <Input placeholder="Informe o endereço de entrega com: rua, bairro, CEP e número" />
+            <Button>
+              <Button.Icon>
+                <Feather name="arrow-right-circle" size={20} />
+              </Button.Icon>
+              <Button.Text>Enviar pedido</Button.Text>
+            </Button>
 
-              <LinkButton href="/">
-                <Feather
-                  name="arrow-left-circle"
-                  size={20}
-                  color={colors.slate[100]}
-                />
-                <LinkButton.Text>Continuar comprando</LinkButton.Text>
-              </LinkButton>
-            </View>
+            <LinkButton href="/">
+              <Feather
+                name="arrow-left-circle"
+                size={20}
+                color={colors.slate[100]}
+              />
+              <LinkButton.Text>Continuar comprando</LinkButton.Text>
+            </LinkButton>
           </View>
         </ScrollView>
       </KeyboardAwareScrollView>
