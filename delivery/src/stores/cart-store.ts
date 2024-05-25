@@ -1,4 +1,6 @@
 import { create } from 'zustand'
+import { createJSONStorage, persist } from 'zustand/middleware'
+import AsyncStore from '@react-native-async-storage/async-storage'
 
 import { ProductProps } from '@/utils/data/products'
 import * as cartInMemory from './helpers/cart-in-memory'
@@ -13,16 +15,24 @@ interface ICartProps {
   remove: (product_id: string) => void
 }
 
-export const useCartStore = create<ICartProps>((set) => {
-  return {
-    products: [],
-    add: (product: ProductProps) =>
-      set((state) => ({
-        products: cartInMemory.add(state.products, product),
-      })),
-    remove: (product_id: string) =>
-      set((state) => ({
-        products: cartInMemory.remove(state.products, product_id),
-      })),
-  }
-})
+export const useCartStore = create(
+  persist<ICartProps>(
+    (set) => {
+      return {
+        products: [],
+        add: (product: ProductProps) =>
+          set((state) => ({
+            products: cartInMemory.add(state.products, product),
+          })),
+        remove: (product_id: string) =>
+          set((state) => ({
+            products: cartInMemory.remove(state.products, product_id),
+          })),
+      }
+    },
+    {
+      name: 'delivery_cart',
+      storage: createJSONStorage(() => AsyncStore),
+    },
+  ),
+)
