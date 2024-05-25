@@ -13,6 +13,7 @@ interface ICartProps {
   products: IProductCartProps[]
   add: (product: ProductProps) => void
   remove: (product_id: string) => void
+  clearCart: () => void
 }
 
 export const useCartStore = create(
@@ -28,6 +29,7 @@ export const useCartStore = create(
           set((state) => ({
             products: cartInMemory.remove(state.products, product_id),
           })),
+        clearCart: () => set(() => ({ products: [] })),
       }
     },
     {
